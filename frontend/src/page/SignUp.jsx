@@ -1,18 +1,20 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { register } from "../Redux/slices/authSlice";
+import { toast } from "react-hot-toast";
 import Layout from "../Layout/Layout";
+import { register } from "../Redux/slices/authSlice";
 
 function Signup() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
+    mobileNumber: "",
     email: "",
     password: "",
-    confirmPassword: "",
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -24,27 +26,77 @@ function Signup() {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+//   async function handleSubmit(e) {
+//      e.preventDefault();//prevent the form reloading the page
+//     console.log(formData)
 
-    if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
-      return;
-    }
+//     //Add validations for the form input
+//     if(!formData.email || !formData.mobileNumber || !formData.password|| !formData.firstName){
+//      toast.error("Missing value for the form")
+//       return;
+//     }
+//     if(formData.firstName.length<5){
+//       toast.error("First should be atleast 5 characters long and maximum 20 characters long")
+//       return;
+//     }
 
-    const fakeUser = {
-      name: formData.name,
-      email: formData.email,
-    };
+//     //check email 
+//     if(!formData.email.includes('@') || !formData.email.includes('.')){
+//       toast.error("Invalid email address")
+//       return;
+//     }
 
-    const fakeToken = "new-user-token-123";
+//     //check mobile number
 
-    dispatch(register({ user: fakeUser, token: fakeToken }));
+//     if(formData.mobileNumber.length<10||formData.mobileNumber.length>12){
+//       toast.error("Moblile number should between 10 and 12 characters long")
+//       return
+//     }
+    
+//     console.log("FORM DATA:", formData);
 
-    alert("Account Created Successfully!");
-    navigate("/");
-  };
+// try {
+//   const apiResponse = await dispatch(register(formData));
+//   console.log("API response:", apiResponse);
 
+//   if (apiResponse?.payload?.data?.success) {
+//     navigate("/auth/login");
+//   } else {
+//     toast.error(apiResponse?.payload?.data?.message || "Signup failed");
+//   }
+
+// } catch (error) {
+//   console.log("ERROR:", error);
+// }
+//   };
+
+async function handleSubmit(e) {
+  e.preventDefault();
+
+  console.log("FORM DATA:", formData);
+
+  if (!formData.email || !formData.mobileNumber || !formData.password || !formData.firstName) {
+    toast.error("Missing value for the form");
+    return;
+  }
+
+  try {
+    const apiResponse = await dispatch(register(formData));
+
+    console.log("API RESPONSE:", apiResponse);
+
+    if (register.fulfilled.match(apiResponse)) {
+  toast.success("Signup successful");
+  navigate("/login");
+} else {
+  toast.error(apiResponse?.payload?.error || "Signup failed");
+}
+
+  } catch (error) {
+    console.log("ERROR:", error);
+    toast.error("Something went wrong");
+  }
+}
   return (
     <Layout>
       <div className="min-h-screen flex items-center justify-center bg-gray-50 px-6">
@@ -61,15 +113,29 @@ function Signup() {
 
           <form onSubmit={handleSubmit} className="mt-8 space-y-5">
 
-            {/* Full Name */}
+            {/* First Name */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                First Name
+              </label>
+              <input
+                type="text"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                required
+                className="mt-2 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+              />
+            </div>
+            {/* Last Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 Full Name
               </label>
               <input
                 type="text"
-                name="name"
-                value={formData.name}
+                name="lastName"
+                value={formData.lastName}
                 onChange={handleChange}
                 required
                 className="mt-2 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
@@ -118,12 +184,12 @@ function Signup() {
             {/* Confirm Password */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Confirm Password
+                Mobile Number
               </label>
               <input
-                type={showPassword ? "text" : "password"}
-                name="confirmPassword"
-                value={formData.confirmPassword}
+                type="text"
+                name="mobileNumber"
+                value={formData.mobileNumber}
                 onChange={handleChange}
                 required
                 className="mt-2 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
