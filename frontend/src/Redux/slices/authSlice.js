@@ -3,9 +3,24 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 import axiosInstance from "../../Helpers/axiosInstance";
 
+// const initialState = {
+//   isLoggedIn: localStorage.getItem("isLoggedIn") === "true" || false,
+//   user: JSON.parse(localStorage.getItem("user")) || null,
+//   token: localStorage.getItem("token") || null,
+// };
 const initialState = {
   isLoggedIn: localStorage.getItem("isLoggedIn") === "true" || false,
-  user: JSON.parse(localStorage.getItem("user")) || null,
+
+  user: (() => {
+    try {
+      const data = localStorage.getItem("user");
+      if (!data || data === "undefined") return null;
+      return JSON.parse(data);
+    } catch {
+      return null;
+    }
+  })(),
+
   token: localStorage.getItem("token") || null,
 };
 
@@ -87,16 +102,31 @@ const authSlice = createSlice({
 
 
       // ✅ LOGIN SUCCESS
+      // .addCase(login.fulfilled, (state, action) => {
+      //   state.isLoggedIn = true;
+      //   state.user = action?.payload?.data?.user;
+      //   state.token = action?.payload?.data?.token;
+
+      //   localStorage.setItem("isLoggedIn", true);
+      //   // localStorage.setItem("user", JSON.stringify(state.user));
+      //   localStorage.setItem('data',JSON.stringify(action?.payload?.data?.data?.userData));
+        
+      //   // localStorage.setItem("token", state.token);
+      // })
+
       .addCase(login.fulfilled, (state, action) => {
+        const userData = action?.payload?.data?.data?.userData;
+
         state.isLoggedIn = true;
-        state.user = action?.payload?.data?.user;
-        state.token = action?.payload?.data?.token;
+        state.user = userData;
 
         localStorage.setItem("isLoggedIn", true);
-        // localStorage.setItem("user", JSON.stringify(state.user));
-        localStorage.setItem('data',JSON.stringify(action?.payload?.data?.data?.userData));
-        
-        // localStorage.setItem("token", state.token);
+        localStorage.setItem("user", JSON.stringify(userData));
+      })
+
+      // ❌ LOGIN FAILED
+      .addCase(login.rejected, (state, action) => {
+        toast.error(action.payload?.message || "Login failed");
       })
 
       // ✅ LOGOUT SUCCESS
