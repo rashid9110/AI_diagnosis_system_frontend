@@ -52,7 +52,7 @@ export const login = createAsyncThunk(
   "/auth/login",
   async (data, { rejectWithValue }) => {
     try {
-      const response = axiosInstance.post("/login/login", data);
+      const response = axiosInstance.post("/login", data);
 
       toast.promise(response, {
         loading: "Logging in...",
