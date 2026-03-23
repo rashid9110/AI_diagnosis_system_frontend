@@ -20,7 +20,6 @@ function Login() {
     setFormData({ ...formData, [name]: value });
   }
   async function handleSubmit(e) {
-    alert("Submit clicked");
     e.preventDefault(); // prevent the form from reloading the page
     console.log(formData);
 

@@ -26,83 +26,57 @@ function Signup() {
     });
   };
 
-//   async function handleSubmit(e) {
-//      e.preventDefault();//prevent the form reloading the page
-//     console.log(formData)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-//     //Add validations for the form input
-//     if(!formData.email || !formData.mobileNumber || !formData.password|| !formData.firstName){
-//      toast.error("Missing value for the form")
-//       return;
-//     }
-//     if(formData.firstName.length<5){
-//       toast.error("First should be atleast 5 characters long and maximum 20 characters long")
-//       return;
-//     }
+    // ✅ VALIDATION FIRST
+    if (
+      !formData.email ||
+      !formData.mobileNumber ||
+      !formData.password ||
+      !formData.firstName
+    ) {
+      toast.error("Missing value for the form");
+      return;
+    }
 
-//     //check email 
-//     if(!formData.email.includes('@') || !formData.email.includes('.')){
-//       toast.error("Invalid email address")
-//       return;
-//     }
+    if (formData.firstName.length < 2) {
+      toast.error("First name must be at least 2 characters long");
+      return;
+    }
 
-//     //check mobile number
+    if (!formData.email.includes("@") || !formData.email.includes(".")) {
+      toast.error("Invalid email address");
+      return;
+    }
 
-//     if(formData.mobileNumber.length<10||formData.mobileNumber.length>12){
-//       toast.error("Moblile number should between 10 and 12 characters long")
-//       return
-//     }
-    
-//     console.log("FORM DATA:", formData);
+    if (
+      formData.mobileNumber.length < 10 ||
+      formData.mobileNumber.length > 12
+    ) {
+      toast.error("Mobile number should be between 10 and 12 digits");
+      return;
+    }
 
-// try {
-//   const apiResponse = await dispatch(register(formData));
-//   console.log("API response:", apiResponse);
+    // ✅ API CALL ONLY AFTER VALIDATION
+    try {
+      const apiResponse = await dispatch(register(formData));
 
-//   if (apiResponse?.payload?.data?.success) {
-//     navigate("/auth/login");
-//   } else {
-//     toast.error(apiResponse?.payload?.data?.message || "Signup failed");
-//   }
+      if (register.fulfilled.match(apiResponse)) {
+        toast.success("Signup successful");
+        navigate("/login");
+      } else {
+        toast.error(apiResponse?.payload?.error || "Signup failed");
+      }
+    } catch (error) {
+      toast.error("Something went wrong");
+    }
+  };
 
-// } catch (error) {
-//   console.log("ERROR:", error);
-// }
-//   };
-
-async function handleSubmit(e) {
-  e.preventDefault();
-
-  console.log("FORM DATA:", formData);
-
-  if (!formData.email || !formData.mobileNumber || !formData.password || !formData.firstName) {
-    toast.error("Missing value for the form");
-    return;
-  }
-
-  try {
-    const apiResponse = await dispatch(register(formData));
-
-    console.log("API RESPONSE:", apiResponse);
-
-    if (register.fulfilled.match(apiResponse)) {
-  toast.success("Signup successful");
-  navigate("/login");
-} else {
-  toast.error(apiResponse?.payload?.error || "Signup failed");
-}
-
-  } catch (error) {
-    console.log("ERROR:", error);
-    toast.error("Something went wrong");
-  }
-}
   return (
     <Layout>
       <div className="min-h-screen flex items-center justify-center bg-gray-50 px-6">
-
         <div className="bg-white shadow-lg rounded-xl p-10 w-full max-w-md">
-
           <h2 className="text-3xl font-bold text-center text-blue-600">
             Create Account
           </h2>
@@ -112,7 +86,6 @@ async function handleSubmit(e) {
           </p>
 
           <form onSubmit={handleSubmit} className="mt-8 space-y-5">
-
             {/* First Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
@@ -203,7 +176,6 @@ async function handleSubmit(e) {
             >
               Sign Up
             </button>
-
           </form>
 
           <p className="text-center text-sm text-gray-600 mt-6">
@@ -215,7 +187,6 @@ async function handleSubmit(e) {
               Login
             </span>
           </p>
-
         </div>
       </div>
     </Layout>
