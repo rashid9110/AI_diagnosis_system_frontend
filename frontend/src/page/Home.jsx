@@ -3,9 +3,11 @@
 import { useNavigate } from "react-router-dom";
 import { LogIn, User } from "lucide-react";
 import Layout from "../Layout/Layout";
+import { useSelector } from "react-redux";
 
 
 function Home() {
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const navigate = useNavigate();
 
   return (
@@ -32,7 +34,7 @@ function Home() {
 
     <div className="mt-8 flex justify-center gap-4">
       <button
-        onClick={() => navigate("/upload")}
+        onClick={() => navigate(isLoggedIn ? "/upload" : "/login")}
         className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg shadow-md transition"
       >
         Get Started

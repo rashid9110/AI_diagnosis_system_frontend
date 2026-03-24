@@ -76,10 +76,6 @@ function Layout({ children }) {
             Home
           </Link>
 
-          <Link to="/upload" className="text-gray-700 hover:text-blue-600">
-            Upload
-          </Link>
-
           {isLoggedIn ? (
             <button
               onClick={handleLogout}
