@@ -1,12 +1,10 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { fetchPatients, resetPatientState } from "../Redux/slices/patientSlice";
 import Layout from "../Layout/Layout";
 
 function PatientReports() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { patients, loading, error } = useSelector((state) => state.patient);
 
   useEffect(() => {
@@ -42,21 +40,12 @@ function PatientReports() {
       <div className="flex flex-wrap items-center justify-between mb-6">
         <h2 className="text-3xl font-bold">Patient Reports</h2>
 
-        <div className="flex gap-3">
-          <button
-            onClick={handleReload}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-          >
-            Refresh Patients
-          </button>
-
-          {/* <button
-            onClick={() => navigate('/patients')}
-            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
-          >
-            View All Patients
-          </button> */}
-        </div>
+        <button
+          onClick={handleReload}
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+        >
+          Refresh Patients
+        </button>
       </div>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -30,6 +30,16 @@ function Upload() {
     dispatch(analyzeXray(formData));
   };
 
+  const handleReupload = () => {
+    setFile(null);
+    setPatientId("");
+    // Reset the file input
+    const fileInput = document.getElementById("fileUpload");
+    if (fileInput) {
+      fileInput.value = "";
+    }
+  };
+
   return (
     <Layout>
       <div className="min-h-screen flex items-center justify-center">
@@ -69,22 +79,41 @@ function Upload() {
                 className="hidden"
               />
 
-              {/* Analyze Button */}
-              <button
-                type="submit"
-                disabled={loading}
-                className="mt-5 w-full bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 
-    text-white py-3 rounded-xl shadow-lg transition duration-300"
-              >
-                {loading ? "Analyzing..." : "Analyze X-Ray"}
-              </button>
+              {/* Buttons */}
+              <div className="mt-5 flex gap-3">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="flex-1 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 
+      text-white py-3 rounded-xl shadow-lg transition duration-300"
+                >
+                  {loading ? "Analyzing..." : "Analyze X-Ray"}
+                </button>
+
+                {/* <button
+                  type="button"
+                  onClick={handleReupload}
+                  className="px-6 py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-xl shadow-lg transition duration-300"
+                >
+                  Reupload
+                </button> */}
+              </div>
             </div>
           </form>
 
           {/* RESULT */}
           {result && (
             <div className="mt-6 p-4 bg-gray-100 rounded">
-              <h3 className="text-xl font-semibold mb-2">Analysis Result</h3>
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-xl font-semibold">Analysis Result</h3>
+                <button
+                  onClick={handleReupload}
+                  className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition duration-300"
+                >
+                  Next Analysis
+                </button>
+              </div>
+
               <p>
                 <b>Patient Name</b> {result.patientInfo.name}
               </p>
