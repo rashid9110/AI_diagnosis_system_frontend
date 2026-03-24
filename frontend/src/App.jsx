@@ -3,6 +3,7 @@ import Home from "./page/Home";
 import Upload from "./page/Upload";
 import Login from "./page/Login";
 import Signup from "./page/SignUp";
+import AllPatient from "./page/AllPatient";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Route path="/upload" element={<Upload />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/patients" element={<AllPatient/>} />
     </Routes>
   );
 }

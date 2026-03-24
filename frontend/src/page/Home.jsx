@@ -32,13 +32,22 @@ function Home() {
       to assist healthcare professionals in faster and more reliable diagnosis.
     </p>
 
-    <div className="mt-8 flex justify-center gap-4">
+    <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
       <button
         onClick={() => navigate(isLoggedIn ? "/upload" : "/login")}
         className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg shadow-md transition"
       >
         Get Started
       </button>
+
+      {isLoggedIn && (
+        <button
+          onClick={() => navigate("/patients")}
+          className="bg-blue-600  hover:bg-green-700 text-white px-8 py-3 rounded-lg shadow-md transition"
+        >
+          View All Patients
+        </button>
+      )}
 
       <button
         onClick={() => navigate("/about")}
