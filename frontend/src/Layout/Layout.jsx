@@ -63,12 +63,14 @@ function Layout({ children }) {
       {/* 🔷 Header */}
       <header className="bg-white shadow-md px-8 py-4 flex justify-between items-center">
         {/* Logo */}
-        <Link
-                to="/patients"
-                className="bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-green-700"
-              >
-                View All Patients
-              </Link>
+        {isLoggedIn ? (
+          <Link
+            to="/patients"
+            className="bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-green-700"
+          >
+            View All Patients
+          </Link>
+        ) : null}
 
         {/* Nav */}
         <nav className="flex items-center gap-6">
@@ -77,13 +79,12 @@ function Layout({ children }) {
           </Link>
 
           {isLoggedIn ? (
-
-              <button
-                onClick={handleLogout}
-                className="text-red-500 hover:text-red-700"
-              >
-                Logout
-              </button>
+            <button
+              onClick={handleLogout}
+              className="text-red-500 hover:text-red-700"
+            >
+              Logout
+            </button>
           ) : (
             <>
               <Link to="/login" className="text-gray-700 hover:text-blue-600">
@@ -111,7 +112,10 @@ function Layout({ children }) {
         <p className="mt-2 font-medium">Developed by:</p>
 
         <div className="mt-1 space-y-1">
-          <p>MD RASHID ALAM, FARHAN ALI, GAURAV KUMAR GUPTA, ILMA PARVEEN, MD YUSUF AYUB</p>
+          <p>
+            MD RASHID ALAM, FARHAN ALI, GAURAV KUMAR GUPTA, ILMA PARVEEN, MD
+            YUSUF AYUB
+          </p>
         </div>
       </footer>
     </div>
